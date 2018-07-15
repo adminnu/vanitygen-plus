@@ -4,7 +4,7 @@
 #include <math.h>
 #include <assert.h>
 
-#include <openssl/evp.h>
+#include <openssl/des_old.h>
 #include <openssl/bn.h>
 #include <openssl/ec.h>
 #include <openssl/obj_mac.h>
@@ -1213,7 +1213,7 @@ main(int argc, char **argv)
 	}
 
 	if (decrypt) {
-		if (EVP_read_pw_string(pwbuf, sizeof(pwbuf),
+		if (des_read_pw_string(pwbuf, sizeof(pwbuf),
 				       "Enter import password:", 0) ||
 		    !vg_protect_decode_privkey(pkey, &privtype, key_in, pwbuf))
 			return 1;
@@ -1238,7 +1238,7 @@ main(int argc, char **argv)
 		pkey2 = EC_KEY_new_by_curve_name(NID_secp256k1);
 		res = vg_decode_privkey_any(pkey2, &privtype, key2_in, NULL);
 		if (res < 0) {
-			if (EVP_read_pw_string(pwbuf, sizeof(pwbuf),
+			if (des_read_pw_string(pwbuf, sizeof(pwbuf),
 					       "Enter import password:", 0) ||
 			    !vg_decode_privkey_any(pkey2, &privtype,
 						   key2_in, pwbuf))
@@ -1271,7 +1271,7 @@ main(int argc, char **argv)
 	}
 
 	if (pass_prompt) {
-		res = EVP_read_pw_string(pwbuf, sizeof(pwbuf),
+		res = des_read_pw_string(pwbuf, sizeof(pwbuf),
 					 "Enter password:", 1);
 		if (res)
 			return 1;
